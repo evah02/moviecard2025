@@ -33,7 +33,7 @@ jobs:
           java-version: "11"
           distribution: "adopt"
 
-            - name: Instalar Chrome y dependencias (compatible self-hosted sin sudo)
+      - name: Instalar Chrome y dependencias (compatible self-hosted sin sudo)
         shell: bash
         run: |
           set -e
