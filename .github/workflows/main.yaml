@@ -22,7 +22,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v2
