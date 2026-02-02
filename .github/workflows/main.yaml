@@ -22,7 +22,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v2
@@ -76,7 +76,7 @@ jobs:
           mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=admin23
 
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: qa
     if: github.ref=='refs/heads/master'
     environment: 
