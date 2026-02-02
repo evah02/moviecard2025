@@ -3,7 +3,7 @@ on: push
  
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v2
@@ -76,7 +76,7 @@ jobs:
           mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=admin23
 
   deploy:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: qa
     if: github.ref=='refs/heads/master'
     environment: 
