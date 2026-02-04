@@ -3,7 +3,7 @@ on: push
  
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-latest
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v2
@@ -33,38 +33,23 @@ jobs:
           java-version: "11"
           distribution: "adopt"
 
-      - name: Instalar Chrome y dependencias (compatible self-hosted sin sudo)
-        shell: bash
+      - name: Instalar Chrome y ChromeDriver para pruebas end to end
         run: |
-          set -e
-          echo "User: $(whoami)  UID=$(id -u)"
-
-          if command -v sudo >/dev/null 2>&1; then
-            SUDO="sudo"
-          else
-            SUDO=""
-          fi
-
-          if [ -z "$SUDO" ] && [ "$(id -u)" -ne 0 ]; then
-            echo "ERROR: No hay sudo y no soy root. No puedo instalar Chrome en este runner."
-            echo "Solución: instala Chrome manualmente en la máquina del runner (una vez), o usa Selenium en contenedor."
-            exit 1
-          fi
-
-          $SUDO apt-get update
-          $SUDO apt-get install -y wget unzip curl
-
-          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          $SUDO apt-get install -y ./google-chrome-stable_current_amd64.deb
-
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+  
+          sudo apt --fix-broken install -y
+  
           CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-          curl -sSL -o chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip -o chromedriver.zip
+  
+          curl -L -o chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
+  
+          unzip chromedriver.zip
+  
           chmod +x chromedriver
-          $SUDO mv chromedriver /usr/local/bin/
-
-          google-chrome --version || true
-          chromedriver --version || true
+  
+          sudo mv chromedriver /usr/local/bin/
 
       - name: Ejecutar la aplicación para pruebas end to end
         run: mvn spring-boot:run & sleep 60
