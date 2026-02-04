@@ -1,20 +1,20 @@
 package com.lauracercas.moviecards.unittest.service;
 
-import com.lauracercas.moviecards.model.Actor;
-import com.lauracercas.moviecards.repositories.ActorJPA;
-import com.lauracercas.moviecards.service.actor.ActorServiceImpl;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.anyInt;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.anyInt;
+import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
+
+import com.lauracercas.moviecards.model.Actor;
+import com.lauracercas.moviecards.repositories.ActorJPA;
+import com.lauracercas.moviecards.service.actor.ActorServiceImpl;
 
 /**
  * Autor: Laura Cercas Ramos
@@ -31,7 +31,7 @@ class ActorServiceImplTest {
     @BeforeEach
     void setUp() {
         closeable = openMocks(this);
-        sut = new ActorServiceImpl(actorJPA);
+        sut = new ActorServiceImpl();
     }
 
     @AfterEach
