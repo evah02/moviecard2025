@@ -22,6 +22,8 @@ public class Actor {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date deathDate;
 
     private String country;
 
@@ -60,6 +62,14 @@ public class Actor {
         this.birthDate = birthDate;
     }
 
+    public Date getDeathDate() {
+        return deathDate;
+    }
+
+    public void setDeathDate(Date deathDate) {
+        this.deathDate = deathDate;
+    }
+
     public String getCountry() {
         return country;
     }
@@ -81,11 +91,11 @@ public class Actor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Actor actor = (Actor) o;
-        return Objects.equals(id, actor.id) && Objects.equals(name, actor.name) && Objects.equals(birthDate, actor.birthDate) && Objects.equals(country, actor.country);
+        return Objects.equals(id, actor.id) && Objects.equals(name, actor.name) && Objects.equals(birthDate, actor.birthDate) && Objects.equals(deathDate, actor.deathDate) && Objects.equals(country, actor.country);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, birthDate, country);
+        return Objects.hash(id, name, birthDate, deathDate, country);
     }
 }
