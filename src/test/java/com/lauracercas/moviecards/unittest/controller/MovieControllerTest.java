@@ -3,6 +3,7 @@ package com.lauracercas.moviecards.unittest.controller;
 import com.lauracercas.moviecards.controller.MovieController;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
+import com.lauracercas.moviecards.dto.MovieForm;
 import com.lauracercas.moviecards.service.movie.MovieService;
 import com.lauracercas.moviecards.util.Messages;
 import org.junit.jupiter.api.AfterEach;
@@ -72,23 +73,25 @@ class MovieControllerTest {
 
     @Test
     void shouldSaveMovieWithNoErrors() {
+        MovieForm form = new MovieForm();
         Movie movie = new Movie();
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(false);
 
         when(movieServiceMock.save(any(Movie.class))).thenReturn(movie);
 
-        String viewName = controller.saveMovie(movie, result, model);
+        String viewName = controller.saveMovie(form, result, model);
 
         assertEquals("movies/form", viewName);
 
-        verify(model).addAttribute("movie", movie);
+        verify(model).addAttribute("movie", form);
         verify(model).addAttribute("title", Messages.EDIT_MOVIE_TITLE);
         verify(model).addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
     }
 
     @Test
     void shouldUpdateMovieWithNoErrors() {
+        MovieForm form = new MovieForm();
         Movie movie = new Movie();
         movie.setId(1);
         BindingResult result = mock(BindingResult.class);
@@ -96,11 +99,11 @@ class MovieControllerTest {
 
         when(movieServiceMock.save(any(Movie.class))).thenReturn(movie);
 
-        String viewName = controller.saveMovie(movie, result, model);
+        String viewName = controller.saveMovie(form, result, model);
 
         assertEquals("movies/form", viewName);
 
-        verify(model).addAttribute("movie", movie);
+        verify(model).addAttribute("movie", form);
         verify(model).addAttribute("title", Messages.EDIT_MOVIE_TITLE);
         verify(model).addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
     }
@@ -108,11 +111,11 @@ class MovieControllerTest {
 
     @Test
     void shouldTrySaveMovieWithErrors() {
-        Movie movie = new Movie();
+        MovieForm form = new MovieForm();
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(true);
 
-        String viewName = controller.saveMovie(movie, result, model);
+        String viewName = controller.saveMovie(form, result, model);
 
         assertEquals("movies/form", viewName);
 

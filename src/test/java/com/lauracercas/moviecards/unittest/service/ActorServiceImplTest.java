@@ -28,7 +28,7 @@ class ActorServiceImplTest {
     @Mock
     private RestTemplate template;
     @InjectMocks
-    private ActorService sut = new ActorServiceImpl();
+    private ActorService sut = new ActorServiceImpl(template);
     private AutoCloseable closeable;
 
     @BeforeEach

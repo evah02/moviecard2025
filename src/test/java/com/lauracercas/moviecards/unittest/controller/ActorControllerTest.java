@@ -2,6 +2,7 @@ package com.lauracercas.moviecards.unittest.controller;
 
 import com.lauracercas.moviecards.controller.ActorController;
 import com.lauracercas.moviecards.model.Actor;
+import com.lauracercas.moviecards.dto.ActorForm;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.actor.ActorService;
 import com.lauracercas.moviecards.util.Messages;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -71,22 +73,24 @@ class ActorControllerTest {
     @Test
     void shouldSaveActorWithNoErrors() {
         Actor actor = new Actor();
+        ActorForm form = new ActorForm();
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(false);
 
         when(actorServiceMock.save(any(Actor.class))).thenReturn(actor);
 
-        String viewName = controller.saveActor(actor, result, model);
+        String viewName = controller.saveActor(form, result, model);
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", actor);
+        verify(model).addAttribute("actor", form);
         verify(model).addAttribute("title", Messages.EDIT_ACTOR_TITLE);
         verify(model).addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
     }
 
     @Test
     void shouldUpdateActorWithNoErrors() {
+        ActorForm form = new ActorForm();
         Actor actor = new Actor();
         actor.setId(1);
         BindingResult result = mock(BindingResult.class);
@@ -94,22 +98,22 @@ class ActorControllerTest {
 
         when(actorServiceMock.save(any(Actor.class))).thenReturn(actor);
 
-        String viewName = controller.saveActor(actor, result, model);
+        String viewName = controller.saveActor(form, result, model);
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", actor);
+        verify(model).addAttribute("actor", form);
         verify(model).addAttribute("title", Messages.EDIT_ACTOR_TITLE);
         verify(model).addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
     }
 
     @Test
     void shouldTrySaveActorWithErrors() {
-        Actor actor = new Actor();
+        ActorForm form = new ActorForm();
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(true);
 
-        String viewName = controller.saveActor(actor, result, model);
+        String viewName = controller.saveActor(form, result, model);
 
         assertEquals("actors/form", viewName);
 
