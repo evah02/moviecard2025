@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.lauracercas.moviecards.dto.MovieDTO;
+import com.lauracercas.moviecards.mapper.MovieMapper;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.movie.MovieService;
@@ -40,22 +42,23 @@ public class MovieController {
 
     @GetMapping("movies/new")
     public String newMovie(Model model) {
-        model.addAttribute(MOVIES_ATTRIBUTE, new Movie());
+        model.addAttribute(MOVIES_ATTRIBUTE, new MovieDTO());
         model.addAttribute(TITLE_ATTRIBUTE, Messages.NEW_MOVIE_TITLE);
         return MOVIES_FORM_VIEW;
     }
 
     @PostMapping("saveMovie")
-    public String saveMovie(@ModelAttribute Movie movie, BindingResult result, Model model) {
+    public String saveMovie(@ModelAttribute MovieDTO movieDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            Movie movieSaved = movieService.save(movie);
-            if (movieSaved.getId() != null) {
+            Movie movieToSave = MovieMapper.toEntity(movieDto, new Movie());
+            Movie movieSaved = movieService.save(movieToSave);
+            if (movieDto.getId() != null) {
                 model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
             } else {
                 model.addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
             }
 
-            model.addAttribute(MOVIES_ATTRIBUTE, movieSaved);
+            model.addAttribute(MOVIES_ATTRIBUTE, MovieMapper.toDto(movieSaved));
             model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_MOVIE_TITLE);
         }
         return MOVIES_FORM_VIEW;
@@ -65,7 +68,7 @@ public class MovieController {
     public String editMovie(@PathVariable Integer movieId, Model model) {
         Movie movie = movieService.getMovieById(movieId);
         List<Actor> actors = movie.getActors();
-        model.addAttribute(MOVIES_ATTRIBUTE, movie);
+        model.addAttribute(MOVIES_ATTRIBUTE, MovieMapper.toDto(movie));
         model.addAttribute("actors", actors);
 
         model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_MOVIE_TITLE);

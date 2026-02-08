@@ -1,6 +1,8 @@
 package com.lauracercas.moviecards.unittest.controller;
 
 import com.lauracercas.moviecards.controller.MovieController;
+import com.lauracercas.moviecards.dto.MovieDTO;
+import com.lauracercas.moviecards.mapper.MovieMapper;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.movie.MovieService;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -66,7 +69,7 @@ class MovieControllerTest {
 
         assertEquals("movies/form", viewName);
 
-        verify(model).addAttribute("movie", new Movie());
+        verify(model).addAttribute(eq("movie"), any(MovieDTO.class));
         verify(model).addAttribute("title", Messages.NEW_MOVIE_TITLE);
     }
 
@@ -78,11 +81,11 @@ class MovieControllerTest {
 
         when(movieServiceMock.save(any(Movie.class))).thenReturn(movie);
 
-        String viewName = controller.saveMovie(movie, result, model);
+        String viewName = controller.saveMovie(MovieMapper.toDto(movie), result, model);
 
         assertEquals("movies/form", viewName);
 
-        verify(model).addAttribute("movie", movie);
+        verify(model).addAttribute(eq("movie"), any(MovieDTO.class));
         verify(model).addAttribute("title", Messages.EDIT_MOVIE_TITLE);
         verify(model).addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
     }
@@ -96,11 +99,11 @@ class MovieControllerTest {
 
         when(movieServiceMock.save(any(Movie.class))).thenReturn(movie);
 
-        String viewName = controller.saveMovie(movie, result, model);
+        String viewName = controller.saveMovie(MovieMapper.toDto(movie), result, model);
 
         assertEquals("movies/form", viewName);
 
-        verify(model).addAttribute("movie", movie);
+        verify(model).addAttribute(eq("movie"), any(MovieDTO.class));
         verify(model).addAttribute("title", Messages.EDIT_MOVIE_TITLE);
         verify(model).addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
     }
@@ -112,7 +115,7 @@ class MovieControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(true);
 
-        String viewName = controller.saveMovie(movie, result, model);
+        String viewName = controller.saveMovie(MovieMapper.toDto(movie), result, model);
 
         assertEquals("movies/form", viewName);
 
@@ -132,7 +135,7 @@ class MovieControllerTest {
 
         assertEquals("movies/form", viewName);
 
-        verify(model).addAttribute("movie", movie);
+        verify(model).addAttribute(eq("movie"), any(MovieDTO.class));
         verify(model).addAttribute("actors", actors);
         verify(model).addAttribute("title", Messages.EDIT_MOVIE_TITLE);
     }

@@ -13,9 +13,6 @@ public class ActorDTO {
     private Date deathDate;
     private String country;
 
-    public ActorDTO() {
-    }
-
     public Integer getId() {
         return id;
     }
