@@ -1,9 +1,7 @@
 package com.lauracercas.moviecards.controller;
 
-import com.lauracercas.moviecards.model.Actor;
-import com.lauracercas.moviecards.model.Movie;
-import com.lauracercas.moviecards.service.actor.ActorService;
-import com.lauracercas.moviecards.util.Messages;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
+import com.lauracercas.moviecards.model.Actor;
+import com.lauracercas.moviecards.model.Movie;
+import com.lauracercas.moviecards.service.actor.ActorService;
+import com.lauracercas.moviecards.util.Messages;
 
 
 /**
@@ -47,18 +48,17 @@ public class ActorController {
 
     @PostMapping("saveActor")
     public String saveActor(@ModelAttribute Actor actor, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return ACTOR_FORM_VIEW;
-        }
-        Actor actorSaved = actorService.save(actor);
-        if (actor.getId() != null) {
-            model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
-        } else {
-            model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
-        }
+        if (!result.hasErrors()) {
+            Actor actorSaved = actorService.save(actor);
+            if (actor.getId() != null) {
+                model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
+            } else {
+                model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
+            }
 
-        model.addAttribute(ACTOR_ATTRIBUTE, actorSaved);
-        model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_ACTOR_TITLE);
+            model.addAttribute(ACTOR_ATTRIBUTE, actorSaved);
+            model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_ACTOR_TITLE);
+        }
         return ACTOR_FORM_VIEW;
     }
 
