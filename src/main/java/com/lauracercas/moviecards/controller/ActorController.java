@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.lauracercas.moviecards.dto.ActorDTO;
+import com.lauracercas.moviecards.mapper.ActorMapper;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.actor.ActorService;
@@ -47,16 +49,17 @@ public class ActorController {
     }
 
     @PostMapping("saveActor")
-    public String saveActor(@ModelAttribute Actor actor, BindingResult result, Model model) {
+    public String saveActor(@ModelAttribute ActorDTO actorDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            Actor actorSaved = actorService.save(actor);
-            if (actor.getId() != null) {
+            Actor actorToSave = ActorMapper.toEntity(actorDto, new Actor());
+            Actor actorSaved = actorService.save(actorToSave);
+            if (actorDto.getId() != null) {
                 model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
             } else {
                 model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
             }
 
-            model.addAttribute(ACTOR_ATTRIBUTE, actorSaved);
+            model.addAttribute(ACTOR_ATTRIBUTE, ActorMapper.toDto(actorSaved));
             model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_ACTOR_TITLE);
         }
         return ACTOR_FORM_VIEW;

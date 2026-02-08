@@ -1,23 +1,28 @@
 package com.lauracercas.moviecards.unittest.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+
 import com.lauracercas.moviecards.controller.ActorController;
+import com.lauracercas.moviecards.mapper.ActorMapper;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.actor.ActorService;
 import com.lauracercas.moviecards.util.Messages;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 /**
  * Autor: Laura Cercas Ramos
@@ -76,7 +81,7 @@ class ActorControllerTest {
 
         when(actorServiceMock.save(any(Actor.class))).thenReturn(actor);
 
-        String viewName = controller.saveActor(actor, result, model);
+        String viewName = controller.saveActor(ActorMapper.toDto(actor), result, model);
 
         assertEquals("actors/form", viewName);
 
@@ -94,7 +99,7 @@ class ActorControllerTest {
 
         when(actorServiceMock.save(any(Actor.class))).thenReturn(actor);
 
-        String viewName = controller.saveActor(actor, result, model);
+        String viewName = controller.saveActor(ActorMapper.toDto(actor), result, model);
 
         assertEquals("actors/form", viewName);
 
@@ -109,7 +114,7 @@ class ActorControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(true);
 
-        String viewName = controller.saveActor(actor, result, model);
+        String viewName = controller.saveActor(ActorMapper.toDto(actor), result, model);
 
         assertEquals("actors/form", viewName);
 
