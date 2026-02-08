@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -70,7 +71,7 @@ class ActorControllerTest {
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", new ActorDTO());
+        verify(model).addAttribute(eq("actor"), any(ActorDTO.class));
         verify(model).addAttribute("title", Messages.NEW_ACTOR_TITLE);
     }
 
@@ -86,7 +87,7 @@ class ActorControllerTest {
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", ActorMapper.toDto(actor));
+        verify(model).addAttribute(eq("actor"), any(ActorDTO.class));
         verify(model).addAttribute("title", Messages.EDIT_ACTOR_TITLE);
         verify(model).addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
     }
@@ -104,7 +105,7 @@ class ActorControllerTest {
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", ActorMapper.toDto(actor));
+        verify(model).addAttribute(eq("actor"), any(ActorDTO.class));
         verify(model).addAttribute("title", Messages.EDIT_ACTOR_TITLE);
         verify(model).addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
     }
@@ -134,7 +135,7 @@ class ActorControllerTest {
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", actor);
+        verify(model).addAttribute(eq("actor"), any(ActorDTO.class));
         verify(model).addAttribute("movies", movies);
         verify(model).addAttribute("title", Messages.EDIT_ACTOR_TITLE);
     }

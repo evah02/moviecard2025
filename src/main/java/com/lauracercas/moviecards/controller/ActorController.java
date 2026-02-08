@@ -43,7 +43,7 @@ public class ActorController {
 
     @GetMapping("actors/new")
     public String newActor(Model model) {
-        model.addAttribute(ACTOR_ATTRIBUTE, new Actor());
+        model.addAttribute(ACTOR_ATTRIBUTE, new ActorDTO());
         model.addAttribute(TITLE_ATTRIBUTE, Messages.NEW_ACTOR_TITLE);
         return ACTOR_FORM_VIEW;
     }
@@ -69,7 +69,7 @@ public class ActorController {
     public String editActor(@PathVariable Integer actorId, Model model) {
         Actor actor = actorService.getActorById(actorId);
         List<Movie> movies = actor.getMovies();
-        model.addAttribute(ACTOR_ATTRIBUTE, actor);
+        model.addAttribute(ACTOR_ATTRIBUTE, ActorMapper.toDto(actor));
         model.addAttribute("movies", movies);
 
         model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_ACTOR_TITLE);
