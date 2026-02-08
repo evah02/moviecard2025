@@ -1,5 +1,6 @@
 package com.lauracercas.moviecards.controller;
 
+import com.lauracercas.moviecards.dto.ActorForm;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.actor.ActorService;
@@ -46,20 +47,19 @@ public class ActorController {
     }
 
     @PostMapping("saveActor")
-    public String saveActor(@ModelAttribute Actor actor, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return ACTOR_FORM_VIEW;
-        }
-        Actor actorSaved = actorService.save(actor);
-        if (actor.getId() != null) {
-            model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
-        } else {
-            model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
-        }
+    public String saveActor(@ModelAttribute("actor") ActorForm form, BindingResult result, Model model) {
+        if (!result.hasErrors()) {
+            Actor actorSaved = actorService.saveFromForm(form);
+            if (form.getId() != null) {
+                model.addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
+            } else {
+                model.addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
+            }
 
-        model.addAttribute(ACTOR_ATTRIBUTE, actorSaved);
-        model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_ACTOR_TITLE);
-        return ACTOR_FORM_VIEW;
+            model.addAttribute(ACTOR_ATTRIBUTE, actorSaved);
+            model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_ACTOR_TITLE);
+        }
+    return ACTOR_FORM_VIEW;
     }
 
     @GetMapping("editActor/{actorId}")

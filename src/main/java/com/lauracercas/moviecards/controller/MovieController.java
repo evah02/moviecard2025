@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.lauracercas.moviecards.dto.MovieForm;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
 import com.lauracercas.moviecards.service.movie.MovieService;
@@ -46,20 +47,20 @@ public class MovieController {
     }
 
     @PostMapping("saveMovie")
-    public String saveMovie(@ModelAttribute Movie movie, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return MOVIES_FORM_VIEW;
-        }
-        Movie movieSaved = movieService.save(movie);
-        if (movieSaved.getId() != null) {
-            model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
-        } else {
-            model.addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
-        }
+    public String saveMovie(@ModelAttribute("movie") MovieForm form, BindingResult result, Model model) {
+        if (!result.hasErrors()) {
+            
+            Movie movieSaved = movieService.saveFromForm(form);
+            if (movieSaved.getId() != null) {
+                model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
+            } else {
+                model.addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
+            }
 
-        model.addAttribute(MOVIES_ATTRIBUTE, movieSaved);
-        model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_MOVIE_TITLE);
-        return MOVIES_FORM_VIEW;
+            model.addAttribute(MOVIES_ATTRIBUTE, movieSaved);
+            model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_MOVIE_TITLE);
+        }
+    return MOVIES_FORM_VIEW;
     }
 
     @GetMapping("editMovie/{movieId}")

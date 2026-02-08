@@ -1,6 +1,7 @@
 package com.lauracercas.moviecards.service.movie;
 
 import com.lauracercas.moviecards.model.Movie;
+import com.lauracercas.moviecards.dto.MovieForm;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public interface MovieService {
 
     Movie save(Movie movie);
 
+    Movie saveFromForm(MovieForm form);
 
     Movie getMovieById(Integer movieId);
 }

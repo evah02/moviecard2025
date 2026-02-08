@@ -4,10 +4,10 @@ package com.lauracercas.moviecards.service.actor;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.lauracercas.moviecards.dto.ActorForm;
 import com.lauracercas.moviecards.model.Actor;
 
 /**
@@ -18,15 +18,18 @@ import com.lauracercas.moviecards.model.Actor;
 @Service
 public class ActorServiceImpl implements ActorService {
 
-    @Autowired 
-    RestTemplate template;
-    String url = "https://moviecards-service-huertas.azurewebsites.net/actors";
+    private final RestTemplate template;
+    private final String url;
+    
+    public ActorServiceImpl(RestTemplate template) {
+        this.template = template;
+        this.url = "https://moviecards-service-huertas.azurewebsites.net/actors";
+    }
 
     @Override
     public List<Actor> getAllActors() {
         Actor[] actores = template.getForObject(url, Actor[].class); 
-        List<Actor> actoresList = Arrays.asList(actores); 
-        return actoresList; 
+        return Arrays.asList(actores);
     }
 
     @Override
@@ -41,8 +44,20 @@ public class ActorServiceImpl implements ActorService {
     }
 
     @Override
+    public Actor saveFromForm(ActorForm form) {
+        Actor actor = new Actor();
+        actor.setId(form.getId());
+        actor.setName(form.getName());
+        actor.setBirthDate(form.getBirthDate());
+        actor.setDeathDate(form.getDeathDate());
+        actor.setCountry(form.getCountry());
+
+        return save(actor);
+    }
+
+
+    @Override
     public Actor getActorById(Integer actorId) {
-        Actor actor = template.getForObject(url+"/"+actorId, Actor.class); 
-        return actor;
+        return template.getForObject(url+"/"+actorId, Actor.class);
     }
 }
