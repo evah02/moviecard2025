@@ -89,7 +89,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'moviecards-pre-huertas'
-          slot-name: 'Staging'
+          slot-name: 'Production'
           package: '*.jar'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A645BC08E8E945D582846BF37535C692 }}
 
