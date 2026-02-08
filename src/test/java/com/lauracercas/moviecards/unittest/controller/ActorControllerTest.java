@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import com.lauracercas.moviecards.controller.ActorController;
+import com.lauracercas.moviecards.dto.ActorDTO;
 import com.lauracercas.moviecards.mapper.ActorMapper;
 import com.lauracercas.moviecards.model.Actor;
 import com.lauracercas.moviecards.model.Movie;
@@ -69,7 +70,7 @@ class ActorControllerTest {
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", new Actor());
+        verify(model).addAttribute("actor", new ActorDTO());
         verify(model).addAttribute("title", Messages.NEW_ACTOR_TITLE);
     }
 
@@ -85,7 +86,7 @@ class ActorControllerTest {
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", actor);
+        verify(model).addAttribute("actor", ActorMapper.toDto(actor));
         verify(model).addAttribute("title", Messages.EDIT_ACTOR_TITLE);
         verify(model).addAttribute("message", Messages.SAVED_ACTOR_SUCCESS);
     }
@@ -103,7 +104,7 @@ class ActorControllerTest {
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", actor);
+        verify(model).addAttribute("actor", ActorMapper.toDto(actor));
         verify(model).addAttribute("title", Messages.EDIT_ACTOR_TITLE);
         verify(model).addAttribute("message", Messages.UPDATED_ACTOR_SUCCESS);
     }
