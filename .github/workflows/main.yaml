@@ -65,7 +65,7 @@ jobs:
           java-version: "11"
           distribution: "adopt"
       - name: Construir con Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean verify
       - name: Revisar la calidad con Sonarqube
         run: |
           mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.qualitygate.wait=true -Dsonar.login=admin -Dsonar.password=admin23
