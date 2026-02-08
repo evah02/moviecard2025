@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import com.lauracercas.moviecards.dto.MovieForm;
 import com.lauracercas.moviecards.model.Movie;
 

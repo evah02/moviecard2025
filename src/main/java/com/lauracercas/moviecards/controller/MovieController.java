@@ -41,7 +41,7 @@ public class MovieController {
 
     @GetMapping("movies/new")
     public String newMovie(Model model) {
-        model.addAttribute(MOVIES_ATTRIBUTE, new Movie());
+        model.addAttribute(MOVIES_ATTRIBUTE, new MovieForm());
         model.addAttribute(TITLE_ATTRIBUTE, Messages.NEW_MOVIE_TITLE);
         return MOVIES_FORM_VIEW;
     }
@@ -49,7 +49,6 @@ public class MovieController {
     @PostMapping("saveMovie")
     public String saveMovie(@ModelAttribute("movie") MovieForm form, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            
             Movie movieSaved = movieService.saveFromForm(form);
             if (movieSaved.getId() != null) {
                 model.addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
@@ -66,8 +65,17 @@ public class MovieController {
     @GetMapping("editMovie/{movieId}")
     public String editMovie(@PathVariable Integer movieId, Model model) {
         Movie movie = movieService.getMovieById(movieId);
+        MovieForm form = new MovieForm();
+        form.setId(movie.getId());
+        form.setTitle(movie.getTitle());
+        form.setReleaseYear(movie.getReleaseYear());
+        form.setDuration(movie.getDuration());
+        form.setCountry(movie.getCountry());
+        form.setDirector(movie.getDirector());
+        form.setGenre(movie.getGenre());
+        form.setSinopsis(movie.getSinopsis());
         List<Actor> actors = movie.getActors();
-        model.addAttribute(MOVIES_ATTRIBUTE, movie);
+        model.addAttribute(MOVIES_ATTRIBUTE, form);
         model.addAttribute("actors", actors);
 
         model.addAttribute(TITLE_ATTRIBUTE, Messages.EDIT_MOVIE_TITLE);
