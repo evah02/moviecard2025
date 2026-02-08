@@ -78,13 +78,14 @@ class MovieControllerTest {
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(false);
 
-        when(movieServiceMock.save(any(Movie.class))).thenReturn(movie);
+        when(movieServiceMock.saveFromForm(any(MovieForm.class))).thenReturn(movie);
 
         String viewName = controller.saveMovie(form, result, model);
 
         assertEquals("movies/form", viewName);
 
-        verify(model).addAttribute("movie", form);
+        verify(movieServiceMock).saveFromForm(form);
+        verify(model).addAttribute("movie", movie);
         verify(model).addAttribute("title", Messages.EDIT_MOVIE_TITLE);
         verify(model).addAttribute("message", Messages.SAVED_MOVIE_SUCCESS);
     }
@@ -92,18 +93,20 @@ class MovieControllerTest {
     @Test
     void shouldUpdateMovieWithNoErrors() {
         MovieForm form = new MovieForm();
+        form.setId(1);
         Movie movie = new Movie();
         movie.setId(1);
         BindingResult result = mock(BindingResult.class);
         when(result.hasErrors()).thenReturn(false);
 
-        when(movieServiceMock.save(any(Movie.class))).thenReturn(movie);
+        when(movieServiceMock.saveFromForm(any(MovieForm.class))).thenReturn(movie);
 
         String viewName = controller.saveMovie(form, result, model);
 
         assertEquals("movies/form", viewName);
 
-        verify(model).addAttribute("movie", form);
+        verify(movieServiceMock).saveFromForm(form);
+        verify(model).addAttribute("movie", movie);
         verify(model).addAttribute("title", Messages.EDIT_MOVIE_TITLE);
         verify(model).addAttribute("message", Messages.UPDATED_MOVIE_SUCCESS);
     }
