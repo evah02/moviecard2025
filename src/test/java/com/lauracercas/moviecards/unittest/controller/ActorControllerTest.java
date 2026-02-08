@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -65,7 +64,7 @@ class ActorControllerTest {
 
         assertEquals("actors/form", viewName);
 
-        verify(model).addAttribute("actor", any(Actor.class));
+        verify(model).addAttribute("actor", new Actor());
         verify(model).addAttribute("title", Messages.NEW_ACTOR_TITLE);
     }
 
